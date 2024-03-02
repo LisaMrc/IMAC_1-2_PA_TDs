@@ -9,6 +9,7 @@ unsigned int gcd(unsigned int a, unsigned int b) {
 
     return a;
 }
+
 // recursive version
 // unsigned int gcd(unsigned int a, unsigned int b) {
 //     if (b == 0) {
@@ -22,8 +23,8 @@ unsigned int gcd(unsigned int a, unsigned int b) {
 //     return b == 0 ? a : gcd(b, a % b);
 // }
 
-
-Fraction simplify(Fraction const& f) {
+Fraction simplify(Fraction const& f) 
+{
     unsigned int divisor { gcd(f.numerator, f.denominator) };
 
     return {
