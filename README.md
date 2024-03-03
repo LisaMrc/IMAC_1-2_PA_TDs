@@ -1,1 +1,6 @@
-# IMAC_1-2_TDs_CPP
+# IMAC S2 | Prog & algo | TDs C++
+----
+
+🚧 WIP
+✅ TD terminé
+⚡ Programme amélioré

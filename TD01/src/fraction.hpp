@@ -18,6 +18,14 @@ struct Fraction
     {
         return static_cast<float>(numerator) / static_cast<float>(denominator);
     }
+
+    Fraction& operator+=(Fraction const& f);
+
+    Fraction& operator-=(Fraction const& f);
+
+    Fraction& operator*=(Fraction const& f);
+
+    Fraction& operator/=(Fraction const& f);
 };
 
 Fraction operator+(Fraction const& f1, Fraction const& f2);

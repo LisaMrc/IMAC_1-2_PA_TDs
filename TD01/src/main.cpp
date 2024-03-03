@@ -8,10 +8,10 @@ int main()
     std::cout << "f1 = " << f1 << std::endl;
     std::cout << "f2 = " << f2 << std::endl;
 
-    std::cout << "f1 + f2 = " << (f1+f2) << std::endl;
-    std::cout << "f1 - f2 = " << (f1-f2) << std::endl;
-    std::cout << "f1 * f2 = " << (f1*f2) << std::endl;
-    std::cout << "f1 / f2 = " << (f1/f2) << std::endl;
+    std::cout << "f1 + f2 = " << f1+f2 << std::endl;
+    std::cout << "f1 - f2 = " << f1-f2 << std::endl;
+    std::cout << "f1 * f2 = " << f1*f2 << std::endl;
+    std::cout << "f1 / f2 = " << f1/f2 << std::endl;
 
     std::cout << "f1 == f2 : " << (f1==f2) << std::endl;
     std::cout << "f1 != f2 : " << (f1!=f2) << std::endl;
@@ -25,6 +25,11 @@ int main()
     
     float d1 {static_cast<float>(f1)};
     std::cout << d1 << std::endl;
+
+    std::cout << "f1 += f2 : " << (f1+=f2) << std::endl;
+    std::cout << "f1 -= f2 : " << (f1-=f2) << std::endl;
+    std::cout << "f1 *= f2 : " << (f1*=f2) << std::endl;
+    std::cout << "f1 /= f2 : " << (f1/=f2) << std::endl;
 
     return 0;
 }
