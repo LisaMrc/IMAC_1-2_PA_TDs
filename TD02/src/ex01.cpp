@@ -7,19 +7,14 @@ bool is_sorted(std::vector<int> const& vec)
     return std::is_sorted(vec.begin(), vec.end());
 }
 
-struct minimum
-{
-    int value{};
-    int index{};
-};
-
-minimum find_minimum(std::vector array)
+int find_minimum(std::vector array)
 {
     for (int i{0}; i < array.size(); i++) 
     {
         int valeur_courante = array[i];
 
-        if (valeur_courante > max_provision) {
+        if (valeur_courante > max_provision)
+        {
             max_provision = valeur_courante;
             max_nain = i;
         }
@@ -35,7 +30,7 @@ minimum find_minimum(std::vector array)
 void selection_sort(std::vector<int> & vec)
 {
     // trouve le minimum du tableau entre l'indice 0 et l
-    // place-le à l'indice 0 et l'indice 0 à l'indice du minimum
+    // place-le à l'indice 0 et l'indice 0 à l'indice du minimum (échange : swap)
 
     // trouve le minimum du tableau entre l'indice 1 et l
     // place-le à l'indice 1 et l'indice 0 à l'indice du minimum
