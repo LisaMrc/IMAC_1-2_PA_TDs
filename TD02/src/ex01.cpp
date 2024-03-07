@@ -5,43 +5,42 @@
 bool is_sorted(std::vector<int> const& vec)
 {
     return std::is_sorted(vec.begin(), vec.end());
-}
+};
 
-int find_minimum(std::vector array)
+int find_minimum(std::vector<int> array, int boundary)
 {
-    for (int i{0}; i < array.size(); i++) 
+    int minimum = array[0];
+
+    for (int i{boundary}; i < array.size(); i++) 
     {
-        int valeur_courante = array[i];
-
-        if (valeur_courante > max_provision)
+        if (array[i] < minimum)
         {
-            max_provision = valeur_courante;
-            max_nain = i;
-        }
-
-        if (valeur_courante < min_provision) {
-            min_provision = valeur_courante;
-            min_nain = i;
+            minimum = array[i];
         }
     }
+    return minimum;
 }
-
 
 void selection_sort(std::vector<int> & vec)
 {
-    // trouve le minimum du tableau entre l'indice 0 et l
-    // place-le à l'indice 0 et l'indice 0 à l'indice du minimum (échange : swap)
+    for (int boundary = 0; boundary < vec.size(); boundary++)
+    {
+        // trouve le minimum du tableau entre l'indice boundary et l
+        int minimum = find_minimum(vec, boundary);
 
-    // trouve le minimum du tableau entre l'indice 1 et l
-    // place-le à l'indice 1 et l'indice 0 à l'indice du minimum
-    // ...
-}
+        // échange le nombre qui se trouve à l'indice boundary avec le minimum trouvé
+        std::swap(minimum, vec[boundary]);
+    }
+};
 
 int main()
 {
-    std::vector<int> array {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    std::vector<int> sortedArray {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    std::vector<int> notSortedArray {5, 7, 3, 4, 9, 6, 0, 8, 4};
 
-    if (is_sorted(array))
+    selection_sort(notSortedArray);
+
+    if (is_sorted(notSortedArray))
     {
         std::cout << "Le tableau est trié" << std::endl;
     } else {
