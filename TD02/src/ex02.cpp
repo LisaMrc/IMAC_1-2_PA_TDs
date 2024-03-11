@@ -26,7 +26,7 @@ void merge_sort_merge(std::vector<float> & vec, size_t const left, size_t const 
         } 
         else
         {
-            temp[k]=vec[k];
+            temp[k]=vec[j];
             j++;
             k++;
         }
@@ -47,13 +47,11 @@ void merge_sort_merge(std::vector<float> & vec, size_t const left, size_t const 
         k++;
     }
     
-    for (int s = 0; s < vec.size(); s++)
+    for (int s=left; s<=right; s++)
     {
         vec[s]=temp[s];
     } 
 }
-
-// ____________________________________________________________
 
 //  merge sort function
 void merge_sort(std::vector<float> & vec, size_t const left, size_t const right)
@@ -75,10 +73,9 @@ void merge_sort(std::vector<float> & vec)
 
 int main()
 {
-    // std::vector<int> notSortedArray {6, 5, 3, 1, 8, 7, 2, 4};
     std::vector<float> myarr{4, 6, 1, 2, 7};
 
-    merge_sort(myarr, 0, 4);
+    merge_sort(myarr, 0, myarr.size()-1);
 
     if (is_sorted(myarr))
     {

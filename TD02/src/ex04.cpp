@@ -1,16 +1,23 @@
-#include <iostream>
+// #include <iostream>
+// #include <vector>
 
-int main()
-{
-    int entryDays{};
-    std::cout << "Enter a number of days :";
-    std::cin >> entryDays;
+// int search(std::vector<int> vec, int value)
+// {
+//     for (int i = 0; i < vec.size(); i++)
+//     {
+//         if (array[i] = value)
+//         {
+//             return i;
+//         }
+//         else
+//         {
+//             return -1;
+//         }
+//     }
+// }
 
-    int centuries{entryDays/(100*360)};
-    int years{(entryDays%(360*100))/360};
-    int months{(entryDays%360)/30};
-    int weeks{(entryDays%30)/7};
-    int days{(entryDays%30)%7};
+// int main()
+// {
 
-    std::cout << entryDays << " days are " << centuries << " century(ies), " << years << " year(s), " << months << " months, " << weeks << " week(s) and " << days << " day(s)" <<std::endl;
-}
+//     return 0
+// }
