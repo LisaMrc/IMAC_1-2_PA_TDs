@@ -1,8 +1,10 @@
 # IMAC S2 | Prog & algo | TDs C++
 ----
 
-🚧 WIP
-✅ TD terminé
+🪚 Exercice en cours (WIP)
+🪵 Exercice Terminé
+🛖 TD terminé
+
 ⚡ Programme amélioré (plus efficace / moins de lignes de code)
 🎨 Meilleure structure / format / lisibilité
 🧹 Suppression de fichiers inutiles (nettoyage)
