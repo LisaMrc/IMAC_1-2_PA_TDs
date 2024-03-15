@@ -19,11 +19,11 @@ int binary_search(std::vector<int> vec, int value)
         else
         right = middle - 1;
     }
-
-  return -1;
+    return -1;
 }
 
-int main(void) {
+int main(void)
+{
     std::vector<int> test_array1 {1, 2, 2, 3, 4, 8, 12};
     std::vector<int> test_array2 {1, 2, 3, 3, 6, 14, 12, 15};
     std::vector<int> test_array3 {2, 2, 3, 4, 5, 8, 12, 15, 16};
