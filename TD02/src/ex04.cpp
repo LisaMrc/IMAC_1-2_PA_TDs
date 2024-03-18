@@ -30,9 +30,9 @@ int main(void)
     std::vector<int> test_array4 {5, 6, 7, 8, 9, 10, 11, 12, 13};
     std::vector<int> test_array5 {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-    std::cout << binary_search(test_array1, 8);
-    std::cout << binary_search(test_array2, 15);
-    std::cout << binary_search(test_array3, 16);
-    std::cout << binary_search(test_array4, 6);
-    std::cout << binary_search(test_array5, 10);
+    std::cout << binary_search(test_array1, 8) << std::endl;
+    std::cout << binary_search(test_array2, 15) << std::endl;
+    std::cout << binary_search(test_array3, 16) << std::endl;
+    std::cout << binary_search(test_array4, 6) << std::endl;
+    std::cout << binary_search(test_array5, 10) << std::endl;
 }
