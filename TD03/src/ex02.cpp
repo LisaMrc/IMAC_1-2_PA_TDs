@@ -7,6 +7,16 @@
 #include <stack>
 #include <cmath>
 
+enum class Operator { ADD, SUB, MUL, DIV, OPEN_PAREN, CLOSE_PAREN};
+enum class TokenType { OPERATOR, OPERAND };
+
+struct Token 
+{
+  TokenType type;
+  float value;
+  Operator op;
+};
+
 std::vector<std::string>split_string(std::string const& s)
 {
     std::istringstream in(s);
@@ -41,13 +51,15 @@ float calculate_result (float leftOperand, std::string NPI_operator, float right
     {
         return leftOperand / rightOperand;
     }
+    else 
+    {
+        return pow(leftOperand, rightOperand);
+    }
 }
 
 float npi_evaluate(std::vector<std::string> const& tokens)
 {
     std::stack<float> stack;
-    float result{};
-
     for (int i = 0; i < tokens.size(); i++)
     {
         if (is_floating(tokens[i]))
@@ -63,11 +75,39 @@ float npi_evaluate(std::vector<std::string> const& tokens)
             float leftOperand { stack.top() };
             stack.pop();
 
-            result = calculate_result(leftOperand, NPI_operator, rightOperand);
+            float result = {calculate_result(leftOperand, NPI_operator, rightOperand)};
             stack.push(result);
         }
     }
-    return result; 
+    return stack.top(); 
+}
+
+Token make_token(float value)
+{
+    // S'il y a un couac au lancement c'est peut-être dû à ça...
+    return {TokenType::OPERAND, value, Operator::ADD};
+}
+
+Token make_token(Operator op)
+{
+    // ... ou ça
+    return {TokenType::OPERATOR, 0, op};
+}
+
+std::vector<Token> tokenize(std::vector<std::string> const& words)
+{
+    for (int i = 0; i < words.size(); i++)
+    {
+        if (is_floating(words[i]))
+        {
+            make_token(std::stof(words[i]));
+        }
+        else
+        {
+            // ! PB ICI
+            make_token(words[i]);
+        }
+    }
 }
 
 int main()
@@ -77,7 +117,6 @@ int main()
     std::getline(std::cin, user_input);
     
     std::vector<std::string> splitted_user_input = split_string(user_input);
-
     std::cout << npi_evaluate(splitted_user_input);
 
     return 0;
