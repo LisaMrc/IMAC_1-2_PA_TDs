@@ -7,6 +7,7 @@
 #include <system_error>
 #include <charconv>
 #include <stack>
+#include <cmath>
 
 std::vector<std::string>split_string(std::string const& s)
 {
@@ -38,9 +39,13 @@ float calculate_result (float leftOperand, std::string hello_operator, float rig
     {
         return leftOperand * rightOperand;
     }
-    else
+    else if (hello_operator == "/")
     {
         return leftOperand / rightOperand;
+    }
+    else
+    {
+        pow(leftOperand, rightOperand);
     }
 }
 
@@ -48,6 +53,8 @@ float npi_evaluate(std::vector<std::string> const& tokens)
 {
     // initialiser une stack, if is_floating, on le convertit
     std::stack<float> stack;
+    float result{};
+
     for (int i = 0; i < tokens.size(); i++)
     {
         if (is_floating(tokens[i]))
@@ -69,23 +76,22 @@ float npi_evaluate(std::vector<std::string> const& tokens)
             stack.pop();
 
             // Il faut ensuite en fonction de l'opérateur calculer le résultat pour le remettre dans la pile
-            float result {calculate_result(leftOperand, hello_operator, rightOperand)};
+            result = calculate_result(leftOperand, hello_operator, rightOperand);
             stack.push(result);
         }
     }
-
-    // A BOSSER ICI
-    return stack; 
+    return result; 
 }
 
 int main()
 {
     std::string user_input;
+    std::cout << "Please enter NPI expression :";
     std::getline(std::cin, user_input);
     
     std::vector<std::string> splitted_user_input = split_string(user_input);
 
-    std::cout << float npi_evaluate(std::vector<std::string> const& splitted_user_input);
+    std::cout << npi_evaluate(splitted_user_input);
 
     return 0;
 }
