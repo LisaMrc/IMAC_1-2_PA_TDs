@@ -7,7 +7,7 @@
 #include <stack>
 #include <cmath>
 
-enum class Operator { ADD, SUB, MUL, DIV, OPEN_PAREN, CLOSE_PAREN};
+enum class Operator { ADD, SUB, MUL, DIV, OPEN_PAREN, CLOSE_PAREN, POW};
 enum class TokenType { OPERATOR, OPERAND };
 
 struct Token 
@@ -33,55 +33,6 @@ bool is_floating(std::string const& s)
     return true;
 }
 
-float calculate_result (float leftOperand, std::string NPI_operator, float rightOperand)
-{
-    if (NPI_operator == "+")
-    {
-        return leftOperand + rightOperand;
-    }
-    else if (NPI_operator == "-")
-    {
-        return leftOperand - rightOperand;
-    }
-    else if (NPI_operator == "*")
-    {
-        return leftOperand * rightOperand;
-    }
-    else if (NPI_operator == "/")
-    {
-        return leftOperand / rightOperand;
-    }
-    else 
-    {
-        return pow(leftOperand, rightOperand);
-    }
-}
-
-float npi_evaluate(std::vector<std::string> const& tokens)
-{
-    std::stack<float> stack;
-    for (int i = 0; i < tokens.size(); i++)
-    {
-        if (is_floating(tokens[i]))
-        {
-            stack.push(std::stof(tokens[i]));
-        }
-        else
-        {
-            std::string NPI_operator = tokens[i];
-
-            float rightOperand { stack.top() };
-            stack.pop();
-            float leftOperand { stack.top() };
-            stack.pop();
-
-            float result = {calculate_result(leftOperand, NPI_operator, rightOperand)};
-            stack.push(result);
-        }
-    }
-    return stack.top(); 
-}
-
 Token make_token(float value)
 {
     // S'il y a un couac au lancement c'est peut-être dû à ça...
@@ -96,18 +47,92 @@ Token make_token(Operator op)
 
 std::vector<Token> tokenize(std::vector<std::string> const& words)
 {
+    std::vector<Token> tokenized_string{};
+
     for (int i = 0; i < words.size(); i++)
     {
         if (is_floating(words[i]))
         {
-            make_token(std::stof(words[i]));
+            tokenized_string.push_back(make_token(std::stof(words[i])));
+        }
+        else if (words[i] == "+")
+        {
+            tokenized_string.push_back(make_token(Operator::ADD));
+        }
+        else if (words[i] == "-")
+        {
+            tokenized_string.push_back(make_token(Operator::SUB));
+        }
+        else if (words[i] == "*")
+        {
+            tokenized_string.push_back(make_token(Operator::MUL));
+        }
+        else if (words[i] == "/")
+        {
+            tokenized_string.push_back(make_token(Operator::DIV));
+        }
+        else if (words[i] == "(")
+        {
+            tokenized_string.push_back(make_token(Operator::OPEN_PAREN));
+        }
+        else if (words[i] == ")")
+        {
+            tokenized_string.push_back(make_token(Operator::CLOSE_PAREN));
+        }
+        else if (words[i] == "^")
+        {
+            tokenized_string.push_back(make_token(Operator::POW));
+        }
+    }
+    
+    return tokenized_string;
+}
+
+float calculate_result (float leftOperand, Operator op, float rightOperand)
+{
+    if (op == Operator::ADD)
+    {
+        return leftOperand + rightOperand;
+    }
+    else if (op == Operator::SUB)
+    {
+        return leftOperand - rightOperand;
+    }
+    else if (op == Operator::MUL)
+    {
+        return leftOperand * rightOperand;
+    }
+    else if (op == Operator::DIV)
+    {
+        return leftOperand / rightOperand;
+    }
+    else 
+    {
+        return pow(leftOperand, rightOperand);
+    }
+}
+
+float npi_evaluate(std::vector<Token> const& tokens)
+{
+    std::stack<float> stack;
+    for (int i = 0; i < tokens.size(); i++)
+    {
+        if (tokens[i].type == TokenType::OPERAND)
+        {
+            stack.push(tokens[i].value);
         }
         else
         {
-            // ! PB ICI
-            make_token(words[i]);
+            float rightOperand { stack.top() };
+            stack.pop();
+            float leftOperand { stack.top() };
+            stack.pop();
+
+            float result = {calculate_result(leftOperand, tokens[i].op, rightOperand)};
+            stack.push(result);
         }
     }
+    return stack.top(); 
 }
 
 int main()
@@ -117,7 +142,17 @@ int main()
     std::getline(std::cin, user_input);
     
     std::vector<std::string> splitted_user_input = split_string(user_input);
-    std::cout << npi_evaluate(splitted_user_input);
+    std::vector<Token> tokenized_user_input = tokenize(splitted_user_input);
+    std::cout << npi_evaluate(tokenized_user_input);
 
     return 0;
 }
+
+// PROTOCOL :
+// User is asked to enter a valid NPI expression
+// user enters a string
+// string is "sliced" into string vectors
+// those string vectors are analyzed, transformed into tokens and stocked into a vector of tokens
+// initialisation of a stack, tokens are analyzed and stacked only if they are numbers
+// result is calculated according to the operator
+// result is printed
