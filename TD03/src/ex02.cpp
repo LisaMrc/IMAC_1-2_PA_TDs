@@ -7,8 +7,8 @@
 #include <stack>
 #include <cmath>
 
-enum class Operator { ADD, SUB, MUL, DIV, OPEN_PAREN, CLOSE_PAREN, POW};
-enum class TokenType { OPERATOR, OPERAND };
+enum class Operator {ADD, SUB, MUL, DIV, OPEN_PAREN, CLOSE_PAREN, POW};
+enum class TokenType {OPERATOR, OPERAND};
 
 struct Token 
 {
@@ -35,13 +35,11 @@ bool is_floating(std::string const& s)
 
 Token make_token(float value)
 {
-    // S'il y a un couac au lancement c'est peut-être dû à ça...
     return {TokenType::OPERAND, value, Operator::ADD};
 }
 
 Token make_token(Operator op)
 {
-    // ... ou ça
     return {TokenType::OPERATOR, 0, op};
 }
 
