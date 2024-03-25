@@ -129,20 +129,21 @@ std::vector<Token> infix_to_npi_tokens(std::string const& expression)
     for (int i = 0; i < tokenized_user_infix_input.size(); i++)
     {
         Token entree = tokenized_user_infix_input[i];
-        if (tokenized_user_infix_input[i].type == TokenType::OPERAND)
+
+        if (entree.type == TokenType::OPERAND)
         {
-            out_vec_of_tokens.push_back(tokenized_user_infix_input[i]);
+            out_vec_of_tokens.push_back(entree);
         }
-        if (tokenized_user_infix_input[i].type == TokenType::OPERATOR)
+        if (entree.type == TokenType::OPERATOR)
         {
-            if (tokenized_user_infix_input[i].op == Operator::OPEN_PAREN)
+            Token top_operator{operators_stack.top()};
+
+            if (entree.op == Operator::OPEN_PAREN)
             {
-                operators_stack.push(tokenized_user_infix_input[i]);
+                operators_stack.push(entree);
             }
-            else if (tokenized_user_infix_input[i].op == Operator::CLOSE_PAREN)
-            {
-                Token top_operator{operators_stack.top()};
-                
+            else if (entree.op == Operator::CLOSE_PAREN)
+            {   
                 while (top_operator.op != Operator::OPEN_PAREN)
                 {
                     out_vec_of_tokens.push_back(top_operator);
@@ -150,17 +151,27 @@ std::vector<Token> infix_to_npi_tokens(std::string const& expression)
                     top_operator = operators_stack.top();
                 }
             }
+
+            size_t top_op_priority{operator_precedence (top_operator.op)};
+            size_t entree_priority{operator_precedence (entree.op)};
+
+            while (top_op_priority >= entree_priority)
+            {
+                out_vec_of_tokens.push_back(top_operator);
+                operators_stack.pop();
+                top_operator = operators_stack.top();
+            }
+            operators_stack.push(entree);
+        }
+
+        while (!(operators_stack.empty()))
+        {
+            out_vec_of_tokens.push_back(operators_stack.top());
+            operators_stack.pop();
         }
     }
     return out_vec_of_tokens;
 }
-
-// Si on rencontre un opérateur:
-
-// Si on rencontre une parenthèse ouvrante ((), on la met sur la pile des opérateurs
-// Si on rencontre une parenthèse fermante ()), on dépile les opérateurs jusqu'à ce qu'on rencontre une parenthèse ouvrante, et on ajoute les opérateurs défilés à la out_vec_of_tokens
-// Tant qu'il y a un opérateur sur la pile des opérateurs de priorité supérieure ou égale à l'opérateur courant, on dépile les opérateurs et on les ajoute à la out_vec_of_tokens. Puis on ajoute l'opérateur courant à la pile des opérateurs.
-// Enfin, on dépile les opérateurs restants et on les ajoute à la out_vec_of_tokens.
 
 float calculate_result (float leftOperand, Operator op, float rightOperand)
 {
@@ -211,13 +222,12 @@ float npi_evaluate(std::vector<Token> const& tokens)
 
 int main()
 {
-    std::string user_input;
-    std::cout << "Please enter NPI expression :";
-    std::getline(std::cin, user_input);
+    std::string user_infix_input;
+    std::cout << "Please enter infix expression :";
+    std::getline(std::cin, user_infix_input);
     
-    std::vector<std::string> splitted_user_input = split_string(user_input);
-    std::vector<Token> tokenized_user_input = tokenize(splitted_user_input);
-    std::cout << npi_evaluate(tokenized_user_input);
+    std::vector<Token>NPI_user_input = infix_to_npi_tokens(user_infix_input);
+    std::cout << npi_evaluate(NPI_user_input);
 
     return 0;
 }
