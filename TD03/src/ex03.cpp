@@ -123,8 +123,8 @@ std::vector<Token> infix_to_npi_tokens(std::string const& expression)
     std::vector<std::string> splitted_infix_user_input = split_string(expression);
     std::vector<Token> tokenized_user_infix_input = tokenize(splitted_infix_user_input);
 
-    std::vector<Token> out_vec_of_tokens;
-    std::stack<Token> operators_stack;
+    std::vector<Token> output;
+    std::stack<Token> operator_stack;
 
     for (int i = 0; i < tokenized_user_infix_input.size(); i++)
     {
@@ -132,45 +132,43 @@ std::vector<Token> infix_to_npi_tokens(std::string const& expression)
 
         if (entree.type == TokenType::OPERAND)
         {
-            out_vec_of_tokens.push_back(entree);
+            output.push_back(entree);
         }
-        if (entree.type == TokenType::OPERATOR)
+        else
         {
-            Token top_operator{operators_stack.top()};
-
-            if (entree.op == Operator::OPEN_PAREN)
+            if (operator_stack.empty() || entree.op == Operator::OPEN_PAREN || operator_precedence(entree.op) >= operator_precedence(operator_stack.top().op))
             {
-                operators_stack.push(entree);
+                operator_stack.push(entree);
             }
             else if (entree.op == Operator::CLOSE_PAREN)
             {   
-                while (top_operator.op != Operator::OPEN_PAREN)
+                while (operator_stack.top().op != Operator::OPEN_PAREN)
                 {
-                    out_vec_of_tokens.push_back(top_operator);
-                    operators_stack.pop();
-                    top_operator = operators_stack.top();
+                    output.push_back(operator_stack.top());
+                    operator_stack.pop();
                 }
+                operator_stack.pop();
             }
+                size_t top_op_priority{operator_precedence (top_operator.op)};
+                size_t entree_priority{operator_precedence (entree.op)};
 
-            size_t top_op_priority{operator_precedence (top_operator.op)};
-            size_t entree_priority{operator_precedence (entree.op)};
-
-            while (top_op_priority >= entree_priority)
-            {
-                out_vec_of_tokens.push_back(top_operator);
-                operators_stack.pop();
-                top_operator = operators_stack.top();
+                while (top_op_priority >= entree_priority)
+                {
+                    output.push_back(top_operator);
+                    operator_stack.pop();
+                    top_operator = operator_stack.top();
+                }
+                operator_stack.push(entree);
             }
-            operators_stack.push(entree);
         }
 
-        while (!(operators_stack.empty()))
+        while (!(operator_stack.empty()))
         {
-            out_vec_of_tokens.push_back(operators_stack.top());
-            operators_stack.pop();
+            output.push_back(operator_stack.top());
+            operator_stack.pop();
         }
     }
-    return out_vec_of_tokens;
+    return output;
 }
 
 float calculate_result (float leftOperand, Operator op, float rightOperand)
