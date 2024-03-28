@@ -114,7 +114,6 @@ std::vector<Token> tokenize(std::vector<std::string> const& words)
             tokenized_string.push_back(make_token(Operator::POW));
         }
     }
-    
     return tokenized_string;
 }
 
@@ -192,7 +191,7 @@ float calculate_result (float leftOperand, Operator op, float rightOperand)
 
 float npi_evaluate(std::vector<Token> const& tokens)
 {
-    std::stack<float> stack;
+    std::stack<float>stack{};
     for (int i = 0; i < tokens.size(); i++)
     {
         if (tokens[i].type == TokenType::OPERAND)
