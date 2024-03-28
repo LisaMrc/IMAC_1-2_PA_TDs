@@ -118,7 +118,7 @@ std::vector<Token> tokenize(std::vector<std::string> const& words)
     return tokenized_string;
 }
 
-std::vector<Token> infix_to_npi_tokens(std::string const& expression)
+std::vector<Token>infix_to_npi_tokens(std::string const& expression)
 {
     std::vector<std::string>splitted_infix_user_input = split_string(expression);
     std::vector<Token>tokenized_infix_user_input = tokenize(splitted_infix_user_input);
@@ -134,7 +134,7 @@ std::vector<Token> infix_to_npi_tokens(std::string const& expression)
         }
         else
         {
-            if (operator_stack.empty() || token.op == Operator::OPEN_PAREN || operator_precedence(token.op) >= operator_precedence(operator_stack.top().op))
+            if (token.op == Operator::OPEN_PAREN || operator_stack.empty())
             {
                 operator_stack.push(token);
             }
@@ -149,8 +149,11 @@ std::vector<Token> infix_to_npi_tokens(std::string const& expression)
             }
             else 
             {
-                output.push_back(operator_stack.top());
-                operator_stack.pop();
+                while (operator_precedence(operator_stack.top().op) >= operator_precedence(token.op))
+                {
+                    output.push_back(operator_stack.top());
+                    operator_stack.pop();
+                }
                 operator_stack.push(token);
             }
         }
