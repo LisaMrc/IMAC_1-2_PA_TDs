@@ -120,27 +120,25 @@ std::vector<Token> tokenize(std::vector<std::string> const& words)
 
 std::vector<Token> infix_to_npi_tokens(std::string const& expression)
 {
-    std::vector<std::string> splitted_infix_user_input = split_string(expression);
-    std::vector<Token> tokenized_user_infix_input = tokenize(splitted_infix_user_input);
+    std::vector<std::string>splitted_infix_user_input = split_string(expression);
+    std::vector<Token>tokenized_infix_user_input = tokenize(splitted_infix_user_input);
 
-    std::vector<Token> output;
-    std::stack<Token> operator_stack;
+    std::vector<Token>output{};
+    std::stack<Token>operator_stack{};
 
-    for (int i = 0; i < tokenized_user_infix_input.size(); i++)
+    for (Token token : tokenized_infix_user_input)
     {
-        Token entree = tokenized_user_infix_input[i];
-
-        if (entree.type == TokenType::OPERAND)
+        if (token.type == TokenType::OPERAND)
         {
-            output.push_back(entree);
+            output.push_back(token);
         }
         else
         {
-            if (operator_stack.empty() || entree.op == Operator::OPEN_PAREN || operator_precedence(entree.op) >= operator_precedence(operator_stack.top().op))
+            if (operator_stack.empty() || token.op == Operator::OPEN_PAREN || operator_precedence(token.op) >= operator_precedence(operator_stack.top().op))
             {
-                operator_stack.push(entree);
+                operator_stack.push(token);
             }
-            else if (entree.op == Operator::CLOSE_PAREN)
+            else if (token.op == Operator::CLOSE_PAREN)
             {   
                 while (operator_stack.top().op != Operator::OPEN_PAREN)
                 {
@@ -149,24 +147,18 @@ std::vector<Token> infix_to_npi_tokens(std::string const& expression)
                 }
                 operator_stack.pop();
             }
-                size_t top_op_priority{operator_precedence (top_operator.op)};
-                size_t entree_priority{operator_precedence (entree.op)};
-
-                while (top_op_priority >= entree_priority)
-                {
-                    output.push_back(top_operator);
-                    operator_stack.pop();
-                    top_operator = operator_stack.top();
-                }
-                operator_stack.push(entree);
+            else 
+            {
+                output.push_back(operator_stack.top());
+                operator_stack.pop();
+                operator_stack.push(token);
             }
         }
-
-        while (!(operator_stack.empty()))
-        {
-            output.push_back(operator_stack.top());
-            operator_stack.pop();
-        }
+    }
+    while (!(operator_stack.empty()))
+    {
+        output.push_back(operator_stack.top());
+        operator_stack.pop();
     }
     return output;
 }
