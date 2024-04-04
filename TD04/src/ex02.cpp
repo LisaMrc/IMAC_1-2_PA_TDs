@@ -24,8 +24,7 @@ std::vector<std::string> split_string(std::string const& str)
     {
         auto idx_end = find_if(idx_begin, str.end(), is_space);
         int nbr_letters = std::distance(idx_begin, idx_end);
-        std::string tmp_str{str[idx_begin], str[nbr_letters]};
-        // TODO : corriger le bug ici
+        std::string tmp_str{str[idx_begin], str[nbr_letters]}; // TODO : corriger le bug ici
         output.push_back(tmp_str);
         tmp_str.clear();
         idx_end += nbr_letters;
