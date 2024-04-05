@@ -7,7 +7,7 @@ bool is_palindrome(std::string const& str)
 
 int main()
 {
-    std::cout << is_palindrome("kayak");
-    is_palindrome("pagaie");
+    std::cout << is_palindrome("kayak") << std::endl;
+    std::cout << is_palindrome("pagaie") << std::endl;
     return 0;
 }
