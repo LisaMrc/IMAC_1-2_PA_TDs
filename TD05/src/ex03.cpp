@@ -1,13 +1,75 @@
-#include <iostream>
+#include <string>
+#include <vector>
 
-bool is_palindrome(std::string const& str)
+enum class CardKind
 {
-    return std::equal(str.begin(), str.end(), str.rbegin());
+    Heart,
+    Diamond,
+    Club,
+    Spade,
+};
+
+enum class CardValue
+{
+    Two,
+    Three,
+    Four,
+    Five,
+    Six,
+    Seven,
+    Eight,
+    Nine,
+    Ten,
+    Jack,
+    Queen,
+    King,
+    Ace,
+};
+
+struct Card
+{
+    CardKind kind;
+    CardValue value;
+
+    int hash()
+    {
+        int cardHash{};
+
+        // IDEE :
+        // En fonction de la position dans la class Cardvalue : nombre entre 1 et 14 (v)
+        // En fonction du symbole : Nombre entre 1 et 4 (s)
+        // c**s % 52 ?
+
+        return cardHash;
+    }
+};
+
+bool operator==(Card a, Card b)
+{
+    return a.kind == b.kind && a.value == b.value;
 }
 
-int main()
+namespace std 
 {
-    std::cout << is_palindrome("kayak") << std::endl;
-    std::cout << is_palindrome("pagaie") << std::endl;
-    return 0;
+    // faire en sorte que la bibliothèque standard utilise notre méthode hash pour la structure Card
+    template<>
+    struct hash<Card>
+    {
+        size_t operator()(Card const& card) const
+        {
+            return card.hash();
+        }
+    };
+}
+
+std::vector<Card> get_cards(size_t const size)
+{
+    // générer une liste de cartes aléatoires
+    std::vector<Card> cards {};
+    cards.reserve(size);
+    for (size_t i {0}; i < size; ++i)
+    {
+        cards.push_back({static_cast<CardKind>(rand() % 4), static_cast<CardValue>(rand() % 13)});
+    }
+    return cards;
 }

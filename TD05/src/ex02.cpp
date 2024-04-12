@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <cstdlib>
 #include <unordered_map>
 
 std::string random_name(size_t size)
@@ -81,14 +80,14 @@ void fixes_sum (std::unordered_map<std::string, std::vector<float>> map)
     for (std::pair<std::string, std::vector<float>> pair : map)
     {
         std::cout << "Robot name : " << pair.first << std::endl;
-        std::cout << "Total costs of robots fixes : " << sum_vec_floats(pair.second) << std::endl;
+        std::cout << "Total cost of fixes : " << sum_vec_floats(pair.second) << std::endl;
     }
     
 }
 // PROTOCOL
 // for each pair in map
-//      print out robot name
-//       print out sum on second member of each pair in the map
+//      print out first member of pair (robot name)
+//       print out sum of second member of pair
 
 int main()
 {
