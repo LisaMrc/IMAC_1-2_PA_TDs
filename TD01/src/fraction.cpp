@@ -39,12 +39,12 @@ std::ostream& operator<<(std::ostream& os, Fraction const& f)
 //     });
 // }
 
-bool operator==(Fraction const& f1, Fraction const& f2)
+bool operator==(Fraction & f1, Fraction & f2)
 {
     simplify(f1);
     simplify(f2);
 
-    if (f1.numerator==f2.numerator)
+    if (f1.numerator*f2.denominator==f2.numerator*f1.denominator)
     {
         return true;
     }
@@ -54,12 +54,12 @@ bool operator==(Fraction const& f1, Fraction const& f2)
     }
 }
 
-bool operator!=(Fraction const& f1, Fraction const& f2)
+bool operator!=(Fraction & f1, Fraction & f2)
 {
     simplify(f1);
     simplify(f2);
 
-    if (f1.numerator!=f2.numerator)
+    if (f1.numerator*f2.denominator!=f2.numerator*f1.denominator)
     {
         return true;
     }
@@ -69,12 +69,12 @@ bool operator!=(Fraction const& f1, Fraction const& f2)
     }
 }
 
-bool operator<(Fraction const& f1, Fraction const& f2)
+bool operator<(Fraction & f1, Fraction & f2)
 {
     simplify(f1);
     simplify(f2);
 
-    if (f1.numerator<f2.numerator)
+    if (f1.numerator*f2.denominator < f2.numerator*f1.denominator)
     {
         return true;
     }
@@ -84,12 +84,12 @@ bool operator<(Fraction const& f1, Fraction const& f2)
     }
 }
 
-bool operator<=(Fraction const& f1, Fraction const& f2)
+bool operator<=(Fraction & f1, Fraction & f2)
 {
     simplify(f1);
     simplify(f2);
 
-    if (f1.numerator<=f2.numerator)
+    if (f1.numerator*f2.denominator <= f2.numerator*f1.denominator)
     {
         return true;
     }
@@ -99,12 +99,12 @@ bool operator<=(Fraction const& f1, Fraction const& f2)
     }
 }
 
-bool operator>(Fraction const& f1, Fraction const& f2)
+bool operator>(Fraction & f1, Fraction & f2)
 {
     simplify(f1);
     simplify(f2);
 
-    if (f1.numerator>f2.numerator)
+    if (f1.numerator*f2.denominator > f2.numerator*f1.denominator)
     {
         return true;
     }
@@ -114,12 +114,12 @@ bool operator>(Fraction const& f1, Fraction const& f2)
     }
 }
 
-bool operator>=(Fraction const& f1, Fraction const& f2)
+bool operator>=(Fraction & f1, Fraction & f2)
 {
     simplify(f1);
     simplify(f2);
 
-    if (f1.numerator>=f2.numerator)
+    if (f1.numerator*f2.denominator >= f2.numerator*f1.denominator)
     {
         return true;
     }

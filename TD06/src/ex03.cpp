@@ -35,11 +35,9 @@ struct Card
     {
         int cardHash{};
 
-        int ck = static_cast<int>(kind);
-        int cv = static_cast<int>(value);
+        int ck = static_cast<int>(CardKind);
+        int cv = static_cast<int>(CardValue);
         cardHash = (ck * cv + 1) % 52;
-
-        // commencer pour chaque symbole a 0 + XX
 
         return cardHash;
     }
