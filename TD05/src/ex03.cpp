@@ -31,15 +31,31 @@ struct Card
     CardKind kind;
     CardValue value;
 
-    int hash()
+    int hash() const 
     {
         int cardHash{};
 
-        int ck = static_cast<int>(kind);
-        int cv = static_cast<int>(value);
-        cardHash = (ck * cv + 1) % 52;
+        switch (kind)
+        {
+        case CardKind::Heart:
+            cardHash = 0 + static_cast<int>(value);
+            break;
 
-        // commencer pour chaque symbole a 0 + XX
+        case CardKind::Diamond:
+            cardHash = 13 + static_cast<int>(value);
+            break;
+
+        case CardKind::Club:
+            cardHash = 26 + static_cast<int>(value);
+            break;
+
+        case CardKind::Spade:
+            cardHash = 39 + static_cast<int>(value);
+            break;
+
+        default:
+            break;
+        }
 
         return cardHash;
     }
