@@ -131,4 +131,6 @@ int main()
     {
         std::cout << card_name(card) << std::endl;
     }
+
+    return 0;
 }

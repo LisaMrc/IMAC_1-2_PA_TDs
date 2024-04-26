@@ -49,7 +49,6 @@ std::unordered_map<std::string, std::vector<float>> robots_fixes_mapping (std::v
             (*key).second.push_back(pair.second);
         }
     }
-
     return output_map;
 }
 // PROTOCOL
@@ -61,7 +60,6 @@ std::unordered_map<std::string, std::vector<float>> robots_fixes_mapping (std::v
 //          insert pair in output map, composed of robot name (first element of entry pair, already as string) and fix in float vector (created in line above)
 //      else
 //          add second member in the map (next to the key)
-
 
 float sum_vec_floats (std::vector<float> vec)
 {
