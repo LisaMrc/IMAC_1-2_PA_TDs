@@ -38,18 +38,46 @@ struct Node
 
         if (this->right != nullptr)
         {
-            left_right = left->height();
+            right_height = right->height();
         }
 
         if (left_height >= right_height)
+        {
             return left_height + 1;
+        }
+
         else
+        {
             return right_height + 1;
+        }
     }
 
     void Node::delete_childs()
     {
-        delete 
+        if (is_leaf)
+        {
+            delete this;
+        }
+        else if (this->right == nullptr && this->right != nullptr)
+        {
+            int tmp_value = this->right;
+            delete this->right;
+            value = tmp_value;
+        }
+        else if (this->right != nullptr && this->right == nullptr)
+        {
+            int tmp_value = this->left;
+            delete this->right;
+            value = tmp_value;
+        }
+        else
+        {
+            int tmp_value {(this->left > this->right) ? this->left : this->right };
+
+            
+        }
+
+// Le nœud à supprimer a deux fils: il faut trouver le nœud qui va remplacer le nœud à supprimer tout en conservant la relation d'ordre entre les nœuds.
     }
 };
 
