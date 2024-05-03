@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <iostream>
+#include <vector>
 
 struct Node
 {
@@ -9,7 +11,7 @@ struct Node
 
     bool is_leaf() const
     {
-        if (this->right == nullptr && this->right == nullptr)
+        if (this->left == nullptr && this->right == nullptr)
             return true;
         return false; 
     }
@@ -50,34 +52,45 @@ struct Node
         {
             return right_height + 1;
         }
+    } 
+
+    void Node::delete_childs() 
+    {
+        if(left)
+        {
+            left->delete_childs();
+            delete this->left;
+            left = nullptr;
+        }
+
+        if(right)
+        {
+            right->delete_childs();
+            delete this->right;
+            right = nullptr;
+        }
     }
 
-    void Node::delete_childs()
+    void Node::display_infixe() const 
     {
-        if (is_leaf)
-        {
-            delete this;
-        }
-        else if (this->right == nullptr && this->right != nullptr)
-        {
-            int tmp_value = this->right;
-            delete this->right;
-            value = tmp_value;
-        }
-        else if (this->right != nullptr && this->right == nullptr)
-        {
-            int tmp_value = this->left;
-            delete this->right;
-            value = tmp_value;
-        }
-        else
-        {
-            int tmp_value {(this->left > this->right) ? this->left : this->right };
+        if(left) left->display_infixe();
+        if(right) right->display_infixe();
 
-            
+        std::cout << this->value << std::endl;
+    }
+
+    std::vector<Node const *> Node::prefixe()  const 
+    {
+        std::vector<Node const*> node_list{};
+        node_list.push_back(this);
+
+       if (!is_leaf())
+        {
+            if(left) left->prefixe();
+            if(right) right->prefixe();
         }
 
-// Le nœud à supprimer a deux fils: il faut trouver le nœud qui va remplacer le nœud à supprimer tout en conservant la relation d'ordre entre les nœuds.
+        return node_list;
     }
 };
 
