@@ -115,6 +115,7 @@ Node*& most_left(Node*& node)
 
 bool remove(Node*& node, int value)
 {
+    
     if (value == node->value && node->is_leaf())
     {
         // On supprime le nœud courant
@@ -131,17 +132,41 @@ bool remove(Node*& node, int value)
         node->left->delete_childs();
         node->value = tmp_L_Value;
     }
-    else if (value == node->value && ((node->right != nullptr && node->right != nullptr)))
+    else if (value == node->value && ((node->right != nullptr && node->left == nullptr)))
+    {
+        auto tmp_R_Value = node->right->value;
+        node->left->delete_childs();
+        node->value = tmp_R_Value;
+    }
+    else if (value == node->value && (node->right != nullptr && node->left != nullptr))
     {
         auto tmp_most_L_value = most_left(node->right)->value;
         remove(most_left(node->right), tmp_most_L_value);
         node->value = tmp_most_L_value;
     }
+    else if (value > node->value)
+    {
+        remove(node->right, value);
+    }
+    else if (value < node->value)
+    {
+        remove(node->left, value);
+    }
+    else
+    {
+        std::cout << "error" << std::endl;
+    }
+}
 
-    /* 
-    TODO : écrire condition child right (OU)
-    TODO : inclure code précédent dans dichotomie où on cherche la valeur dans l'arbre
-    */ 
+void delete_tree(Node* node)
+{
+    /* first delete both subtrees */
+    delete_tree(node->left); 
+    delete_tree(node->right); 
+
+    /* then delete the node */
+    std::cout << "Deleting node : " << node->value << std::endl; 
+    delete node;
 }
 
 void pretty_print_left_right(Node const& node, std::string const& prefix, bool is_left);
