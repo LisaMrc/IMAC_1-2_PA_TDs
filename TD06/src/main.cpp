@@ -4,18 +4,18 @@
 int main()
 {
     Node* root = create_node(5);
-    root->insert(3);
+    root->Node::insert(3);
 
     std::vector<int> to_insert {7, 2, 4, 6, 8, 1, 9, 0};
 
     for (int i : to_insert)
     {
-        root->insert_from_root(i);
+        root->Node::insert_from_root(i);
     }
 
-    root->display_infixe();
+    root->Node::display_infixe();
 
-    std::vector<Node const *>vec = root->prefixe();
+    std::vector<Node const *>vec = root->Node::prefixe();
     int sum{};
 
     for (Node const * i : vec)
@@ -23,7 +23,7 @@ int main()
         sum += i->value;
     }
     
-    std::cout << root->height() << std::endl;
+    std::cout << root->Node::height() << std::endl;
 
     return 0;
 }

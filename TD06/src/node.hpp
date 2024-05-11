@@ -12,12 +12,9 @@ struct Node
     bool is_leaf() const;
     void insert(int value);
     int Node::height() const;
-
-    void delete_childs();
-
-    void display_infixe() const;
-    std::vector<Node const *> prefixe() const;
-
+    void Node::delete_childs();
+    void Node::display_infixe() const;
+    std::vector<Node const *> Node::prefixe() const;
     void insert_from_root(int value);
 };
 

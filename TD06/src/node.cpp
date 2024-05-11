@@ -49,27 +49,34 @@ void Node::insert(int value)
 
 int Node::height() const
 {
-    int left_height{0};
-    int right_height{0};
-
-    if (this->left != nullptr)
+    if (this == nullptr)
     {
-        left_height = left->height();
+        return 0;
     }
-
-    if (this->right != nullptr)
-    {
-        right_height = right->height();
-    }
-
-    if (left_height >= right_height)
-    {
-        return left_height + 1;
-    }
-
     else
     {
-        return right_height + 1;
+        int left_height{0};
+        int right_height{0};
+
+        if (this->left != nullptr)
+        {
+            left_height = left->height();
+        }
+
+        if (this->right != nullptr)
+        {
+            right_height = right->height();
+        }
+
+        if (left_height >= right_height)
+        {
+            return left_height + 1;
+        }
+
+        else
+        {
+            return right_height + 1;
+        }
     }
 }
 
@@ -173,15 +180,30 @@ bool remove(Node*& node, int value)
     {
         return false;
     }
+
+    return true;
 }
 
 void delete_tree(Node* node)
 {
-    /* first delete both subtrees */
-    delete_tree(node->left); 
-    delete_tree(node->right); 
+    if (node == nullptr)
+    {
+        std::cout << "Tree already deleted" << std::endl;
+        return;
+    }
 
-    /* then delete the node */
+    // first delete both subtrees if needed
+    if(node->left)
+    {
+      delete_tree(node->left); 
+    }
+    
+    // ici j'ai pas fait "!= nullptr" car un pointeur est converti en boolean "true" si il est non nullptr et "false" s'il est nullptr donc ça revient au même
+    if(node->right) {
+      delete_tree(node->right); 
+    }
+
+    // delete the node
     std::cout << "Deleting node : " << node->value << std::endl; 
     delete node;
 }
