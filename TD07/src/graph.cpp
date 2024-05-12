@@ -2,17 +2,29 @@
 #include <unordered_map>
 #include <iostream>
 
-void WeightedGraph::add_vertex(int const id)
+void Graph::WeightedGraph::add_vertex(int id)
 {
-    std::unordered_map<int, std::vector<WeightedGraphEdge>>::const_iterator got = adjacency_list.find (id);
+   auto it = adjacency_list.find (id);
 
-    if ( got == adjacency_list.end() )
+    if (it == adjacency_list.end())
         adjacency_list[id];
     else
         std::cout << id << " is already in the graph" << std::endl;
 }
 
-void WeightedGraph::add_directed_edge(int const from, int const to, float const weight = 1.0f)
+void Graph::WeightedGraph::add_directed_edge(int from, int to, float weight = (1.0F))
 {
-     
+    add_vertex(to);
+    adjacency_list[from].push_back({to, weight});
+}
+
+void Graph::WeightedGraph::add_directed_edge(int const from, int const to, float const weight = 1.0f)
+{
+    add_directed_edge(from, to, 1.0F);
+    add_directed_edge(to, from, 1.0F);
+}
+
+Graph::WeightedGraph Graph::build_from_adjacency_matrix(const std::vector<std::vector<float>> &adjacency_matrix)
+{
+    
 }

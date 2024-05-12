@@ -1,0 +1,13 @@
+    std::cout << "\n\n ____ EX 1 ____" << std::endl;
+
+    // Q1
+    Node* root{create_node(5)};
+
+    // Q2
+    std::cout << "Is the root a leaf ? : " << root->is_leaf() << std::endl << std::endl;
+
+    // Q3
+    root->insert(2);
+    root->insert(6);
+
+    // Q4
