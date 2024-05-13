@@ -26,5 +26,19 @@ void Graph::WeightedGraph::add_directed_edge(int const from, int const to, float
 
 Graph::WeightedGraph Graph::build_from_adjacency_matrix(const std::vector<std::vector<float>> &adjacency_matrix)
 {
-    
+    // TODO : créer la unordered map
+    // TODO : trouver
+
+    for (int x = 0; x < adjacency_matrix.size(); x++)
+    {
+        for (int y = 0; y < adjacency_matrix.size(); y++)
+        {
+            int value = adjacency_matrix[x][y];
+
+            if (value != 0)
+            {
+                
+            }
+        }
+    }
 }
