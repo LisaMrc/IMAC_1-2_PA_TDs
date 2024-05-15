@@ -12,13 +12,13 @@ void Graph::WeightedGraph::add_vertex(int id)
         std::cout << id << " is already in the graph" << std::endl;
 }
 
-void Graph::WeightedGraph::add_directed_edge(int from, int to, float weight = (1.0F))
+void Graph::WeightedGraph::add_directed_edge(int from, int to, float weight)
 {
     add_vertex(to);
     adjacency_list[from].push_back({to, weight});
 }
 
-void Graph::WeightedGraph::add_undirected_edge(int const from, int const to, float const weight = 1.0f)
+void Graph::WeightedGraph::add_undirected_edge(int const from, int const to, float const weight)
 {
     add_directed_edge(from, to, 1.0F);
     add_directed_edge(to, from, 1.0F);
@@ -28,7 +28,7 @@ Graph::WeightedGraph Graph::build_from_adjacency_matrix(const std::vector<std::v
 {
     // TODO : trouver comment insérer la valeur dans la unordered map. Ne pas oublier de créer une node à chaque fois
 
-    std::unordered_map<int, std::vector<WeightedGraphEdge>> adjacency_list{};
+    Graph::WeightedGraph output_graph{};
 
     for (int x = 0; x < adjacency_matrix.size(); x++)
     {
@@ -38,8 +38,9 @@ Graph::WeightedGraph Graph::build_from_adjacency_matrix(const std::vector<std::v
 
             if (value != 0)
             {
-                add_directed_edge(x-1, y-1, value);
+                output_graph.add_directed_edge(x, y, value);
             }
         }
     }
+    return output_graph;
 }
