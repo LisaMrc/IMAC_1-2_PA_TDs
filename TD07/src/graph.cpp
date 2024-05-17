@@ -1,6 +1,8 @@
 #include "graph.hpp"
 #include <unordered_map>
 #include <iostream>
+#include <stack>
+#include <queue>
 
 void Graph::WeightedGraph::add_vertex(int id)
 {
@@ -26,28 +28,104 @@ void Graph::WeightedGraph::add_undirected_edge(int const from, int const to, flo
 
 Graph::WeightedGraph Graph::build_from_adjacency_matrix(const std::vector<std::vector<float>> &adjacency_matrix)
 {
-    // PROTOCOL
-    // On parcourt la matrice d'adjacence donnée
-    // On convertit les nombres en nombres dans une liste d'adjacence
-    // Une fois la liste faite, on parcourt la liste pour créer un graphe
-
-    // TODO : trouver comment insérer la valeur dans la unordered map. Ne pas oublier de créer une node à chaque fois
-
     Graph::WeightedGraph output_graph{};
 
     for (int x = 0; x < adjacency_matrix.size(); x++)
     {
-        for (int y = 0; y < adjacency_matrix[x].size(); y++)
+        for (int y = 0; y < adjacency_matrix.size(); y++)
         {
             if (adjacency_matrix[x][y] != 0)
             {
-                auto it = adjacency_list.find(x-1);
-
-            if (value != 0)
-            {
-                output_graph.add_directed_edge(x, y, value);
+                output_graph.add_directed_edge(x, y, adjacency_matrix[x][y]);
             }
         }
     }
     return output_graph;
+}
+
+void Graph::WeightedGraph::print_DFS(int const start) const
+{
+    // TODO : translate comments
+
+    std::stack<int> stack;
+    int current_node{};
+    std::vector<int>visited_edges{};
+    stack.push(start);
+
+    while (!(stack.empty()))
+    {
+        // ajouter la node à la liste des sommets visités
+        visited_edges.push_back(stack.top());
+
+        // Garder en mémoire la node
+        current_node = stack.top();
+
+        // retirer le dernier élt de la pile
+        stack.pop();
+
+        // trouver la node dans la adjacency_list
+        auto it = adjacency_list.find (current_node);
+
+        // trouver les nodes liées
+        auto adjacencies = (*it).second;
+
+        // Ajouter les nodes liées dans la pile
+        for (int i = 0; i < adjacencies.size(); i++)
+        {
+            stack.push(adjacencies[i].to);
+        }
+    }
+
+    for (int visited_edge : visited_edges)
+    {
+        std::cout << visited_edge << std::endl;
+    }
+}
+
+void Graph::WeightedGraph::print_BFS(int const start) const
+{
+    std::queue<int> queue;
+    queue.push(start);
+
+    int current_node{};
+    std::vector<int>visited_edges{};
+
+    while (!(queue.empty()))
+    {
+        // Garder en mémoire la node
+        current_node = queue.front();
+
+        // ajouter la node à la liste des sommets visités
+        visited_edges.push_back(current_node);
+
+        // retirer le premier élt de la file
+        queue.pop();
+
+        // trouver la node dans la adjacency_list
+        auto it = adjacency_list.find (current_node);
+
+        // trouver les nodes liées
+        auto adjacencies = (*it).second;
+
+        // Ajouter les nodes liées dans la pile
+        for (int i = 0; i < adjacencies.size(); i++)
+        {
+            queue.push(adjacencies[i].to);
+        }
+    }
+
+    for (int visited_edge : visited_edges)
+    {
+        std::cout << visited_edge << std::endl;
+    }
+}
+
+void Graph::Dijkstra_algorithm(int start, int end)
+{
+    // TODO: end algorithm
+
+    std::queue<int> priority_queue;
+    std::unordered_map<int, int>asso_tableau;
+
+
 }
