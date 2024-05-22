@@ -126,13 +126,13 @@ std::vector<Node const *> Node::prefixe() const
 
 Node*& most_left(Node*& node)
 {
-    if (node->left->left != nullptr)
+    if (node->left != nullptr)
     {
         most_left(node->left);
     }
     else
     {
-        return node->left->left;
+        return node->left;
     }
 
     return node;
