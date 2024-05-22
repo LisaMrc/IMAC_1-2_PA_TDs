@@ -121,87 +121,74 @@ void Graph::WeightedGraph::print_BFS(int const start) const
     }
 }
 
-// void Graph::Dijkstra_algorithm(int start, int end, int nbr_of_nodes)
-// {
-//     std::queue<int>nodes_to_visit;
-//     std::priority_queue<int>pq;
-//     std::unordered_map<int, int>association_table;
-//     int current_node{};
-//     std::vector<int>visited_edges{};
-
-//     nodes_to_visit.push(start);
-
-//     while (!(nodes_to_visit.empty()))
-//     {
-//         // Garder en mémoire la node
-//         current_node = nodes_to_visit.front();
-
-//         // ajouter la node à la liste des sommets visités
-//         visited_edges.push_back(current_node);
-
-//         // retirer le premier élt de la file
-//         nodes_to_visit.pop();
-
-//         // trouver la node dans la adjacency_list
-//         auto it = adjacency_list.find (current_node);
-
-//         // trouver les nodes liées
-//         auto adjacencies = (*it).second;
-
-//         // Ajouter les nodes liées dans la pile
-//         for (int i = 0; i < adjacencies.size(); i++)
-//         {
-//             nodes_to_visit.push(adjacencies[i].to);
-//         }
-//     }
-// }
-
-// void Graph::Dijkstra_algorithm(int start, int end, int nbr_of_nodes)
-// {
-//     // Initialize all distances
-//     for (int i = 0; i < nbr_of_nodes; i++)
-//     {
-//         /* code */
-//     }
-
-//     // Output
-//     for (int visited_edge : visited_edges)
-//     {
-//         std::cout << "The minimum distance from " << start << " to " << end << " = " << distance << std::endl;
-//     }
-// }
-
-void Graph::Dijkstra_algorithm(int start, int end, int nbr_of_nodes)
+std::unordered_map<int, std::pair<float, int>> Graph::dijkstra(Graph::WeightedGraph const& graph, int const& start, int const end)
 {
-    std::unordered_map<int, std::pair<int, int>>distances{};
-    std::priority_queue<std::pair<int, int>>to_visit{};
     int current_node{};
 
+    // On crée un tableau associatif pour stocker les distances les plus courtes connues pour aller du sommet de départ à chaque sommet visité
+    // La clé est l'identifiant du sommet et la valeur est un pair (distance, sommet précédent)
+    std::unordered_map<int, std::pair<float, int>> distances {};
+
+    // On crée une file de priorité pour stocker les sommets à visiter
+    // la pair contient la distance pour aller jusqu'au sommet et l'identifiant du sommet
+    // Ce type compliqué permet d'indiquer que l'on souhaite trier les éléments par ordre croissant (std::greater) et donc les éléments les plus petits seront au début de la file (top) (Min heap)
+    std::priority_queue<std::pair<float, int>, std::vector<std::pair<float, int>>, std::greater<std::pair<float, int>>> to_visit {};
+
+    // 1. On ajoute le sommet de départ à la liste des sommets à visiter avec une distance de 0 (on est déjà sur le sommet de départ)
     to_visit.push(std::make_pair(0, start));
 
+    // ajouter la node à la liste des sommets visités
+    distances.insert(std::make_pair(start, std::make_pair(0, start))); 
+
+    // Tant qu'il reste des sommets à visiter
     while (!(to_visit.empty()))
     {
-        // Garder en mémoire la node
+        // 2. On récupère le sommet le plus proche du sommet de départ dans la liste de priorité to_visit
         current_node = to_visit.top().second;
 
-        // ajouter la node à la liste des sommets visités
-        distances.insert(std::make_pair(start, std::make_pair(0, start))); 
-
-        // retirer le premier élt de la file
-        to_visit.pop();
-
-        // trouver la node dans la adjacency_list
-        auto it = adjacency_list.find (current_node);
-
-        // trouver les nodes liées
-        auto adjacencies = (*it).second;
-
-        // Ajouter les nodes liées dans la pile
-        for (int i = 0; i < adjacencies.size(); i++)
+        // 3.Si on atteins le point d'arrivé, on s'arrête
+        if (current_node == end)
         {
-            nodes_to_visit.push(adjacencies[i].to);
+            return distances;
+        }
+
+        // 3. On parcourt la liste des voisins (grâce à la liste d'adjacence) du nœud courant
+        for (Graph::WeightedGraphEdge edge : graph.adjacency_list.find(current_node)->second) 
+        {
+            // 4. on regarde si le nœud existe dans le tableau associatif (si oui il a déjà été visité)
+            auto find_node {distances.find(edge.to)};
+            bool visited{};
+
+            if (find_node == distances.end())
+            {
+                visited = 0;
+            }
+            else
+            {
+                visited = 1;
+            }
+
+            if (!visited)
+            {
+                // 5. Si le nœud n'a pas été visité, on l'ajoute au tableau associatif en calculant la distance pour aller jusqu'à ce nœud
+                // la distance actuelle + le point de l'arrête)
+                distances.insert(std::make_pair(edge.to, std::make_pair(distances.find(current_node)->second.first + edge.weight, current_node)));
+                
+                // 6. On ajout également le nœud de destination à la liste des nœud à visiter (avec la distance également pour prioriser les nœuds les plus proches)
+                to_visit.push(std::make_pair(edge.weight, edge.to));
+            }
+            else
+            {
+                // 7. Si il a déjà été visité, On teste si la distance dans le tableau associatif est plus grande
+                // Si c'est le cas on à trouvé un plus court chemin, on met à jour le tableau associatif et on ajoute de nouveau le sommet de destination dans la liste "à visiter"
+                if (distances.find(current_node)->second.first + edge.weight < distances.find(edge.to)->second.first)
+                {
+                    distances.find(edge.to)->second.first = distances.find(current_node)->second.first + edge.weight;
+                    distances.find(edge.to)->second.second = current_node;
+                }
+            } 
         }
     }
 
-    // TODO: end algorithm - trouver les nodes voisines dans adjacency_list puis appliquer le traitement selon si elles ont été visitées ou non
+    return distances;
 }

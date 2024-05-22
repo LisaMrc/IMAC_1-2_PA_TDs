@@ -33,6 +33,6 @@ namespace Graph {
     };
 
     WeightedGraph build_from_adjacency_matrix(std::vector<std::vector<float>> const& adjacency_matrix);
-    void Dijkstra_algorithm(int start, int end, int nbr_of_nodes);
+    std::unordered_map<int, std::pair<float, int>> dijkstra(WeightedGraph const& graph, int const& start, int const end);
 
 } // namespace
