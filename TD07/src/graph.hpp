@@ -33,6 +33,6 @@ namespace Graph {
     };
 
     WeightedGraph build_from_adjacency_matrix(std::vector<std::vector<float>> const& adjacency_matrix);
-    void Dijkstra_algorithm(int start, int end);
+    void Dijkstra_algorithm(int start, int end, int nbr_of_nodes);
 
 } // namespace

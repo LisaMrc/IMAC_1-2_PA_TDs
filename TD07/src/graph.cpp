@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stack>
 #include <queue>
+#define FAR_AWAY 999
 
 void Graph::WeightedGraph::add_vertex(int id)
 {
@@ -120,10 +121,87 @@ void Graph::WeightedGraph::print_BFS(int const start) const
     }
 }
 
-void Graph::Dijkstra_algorithm(int start, int end)
-{
-    // TODO: end algorithm
+// void Graph::Dijkstra_algorithm(int start, int end, int nbr_of_nodes)
+// {
+//     std::queue<int>nodes_to_visit;
+//     std::priority_queue<int>pq;
+//     std::unordered_map<int, int>association_table;
+//     int current_node{};
+//     std::vector<int>visited_edges{};
 
-    std::queue<int> priority_queue;
-    std::unordered_map<int, int>asso_tableau;
+//     nodes_to_visit.push(start);
+
+//     while (!(nodes_to_visit.empty()))
+//     {
+//         // Garder en mémoire la node
+//         current_node = nodes_to_visit.front();
+
+//         // ajouter la node à la liste des sommets visités
+//         visited_edges.push_back(current_node);
+
+//         // retirer le premier élt de la file
+//         nodes_to_visit.pop();
+
+//         // trouver la node dans la adjacency_list
+//         auto it = adjacency_list.find (current_node);
+
+//         // trouver les nodes liées
+//         auto adjacencies = (*it).second;
+
+//         // Ajouter les nodes liées dans la pile
+//         for (int i = 0; i < adjacencies.size(); i++)
+//         {
+//             nodes_to_visit.push(adjacencies[i].to);
+//         }
+//     }
+
+//     // TODO: end algorithm
+// }
+
+// void Graph::Dijkstra_algorithm(int start, int end, int nbr_of_nodes)
+// {
+//     // Initialize all distances
+//     for (int i = 0; i < nbr_of_nodes; i++)
+//     {
+//         /* code */
+//     }
+
+//     // Output
+//     for (int visited_edge : visited_edges)
+//     {
+//         std::cout << "The minimum distance from " << start << " to " << end << " = " << distance << std::endl;
+//     }
+// }
+
+void Graph::Dijkstra_algorithm(int start, int end, int nbr_of_nodes)
+{
+    std::unordered_map<int, int>to_visit;
+    std::priority_queue<int, int>distances;
+    to_visit.push(0, start);
+
+    while (!(to_visit.empty()))
+    {
+        // Garder en mémoire la node
+        current_node = nodes_to_visit.front();
+
+        // ajouter la node à la liste des sommets visités
+        visited_edges.push_back(current_node);
+
+        // retirer le premier élt de la file
+        nodes_to_visit.pop();
+
+        // trouver la node dans la adjacency_list
+        auto it = adjacency_list.find (current_node);
+
+        // trouver les nodes liées
+        auto adjacencies = (*it).second;
+
+        // Ajouter les nodes liées dans la pile
+        for (int i = 0; i < adjacencies.size(); i++)
+        {
+            nodes_to_visit.push(adjacencies[i].to);
+        }
+    }
+
+    // TODO: end algorithm
 }
