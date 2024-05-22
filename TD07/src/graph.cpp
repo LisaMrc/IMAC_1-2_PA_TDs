@@ -154,8 +154,6 @@ void Graph::WeightedGraph::print_BFS(int const start) const
 //             nodes_to_visit.push(adjacencies[i].to);
 //         }
 //     }
-
-//     // TODO: end algorithm
 // }
 
 // void Graph::Dijkstra_algorithm(int start, int end, int nbr_of_nodes)
@@ -175,20 +173,22 @@ void Graph::WeightedGraph::print_BFS(int const start) const
 
 void Graph::Dijkstra_algorithm(int start, int end, int nbr_of_nodes)
 {
-    std::unordered_map<int, int>to_visit;
-    std::priority_queue<int, int>distances;
-    to_visit.push(0, start);
+    std::unordered_map<int, std::pair<int, int>>distances{};
+    std::priority_queue<std::pair<int, int>>to_visit{};
+    int current_node{};
+
+    to_visit.push(std::make_pair(0, start));
 
     while (!(to_visit.empty()))
     {
         // Garder en mémoire la node
-        current_node = nodes_to_visit.front();
+        current_node = to_visit.top().second;
 
         // ajouter la node à la liste des sommets visités
-        visited_edges.push_back(current_node);
+        distances.insert(std::make_pair(start, std::make_pair(0, start))); 
 
         // retirer le premier élt de la file
-        nodes_to_visit.pop();
+        to_visit.pop();
 
         // trouver la node dans la adjacency_list
         auto it = adjacency_list.find (current_node);
@@ -203,5 +203,5 @@ void Graph::Dijkstra_algorithm(int start, int end, int nbr_of_nodes)
         }
     }
 
-    // TODO: end algorithm
+    // TODO: end algorithm - trouver les nodes voisines dans adjacency_list puis appliquer le traitement selon si elles ont été visitées ou non
 }
