@@ -55,7 +55,7 @@ void Graph::WeightedGraph::print_DFS(int const start) const
 
     while (!(stack.empty()))
     {
-        // ajouter la node à la liste des sommets visités
+        // add nodes to visited edges list
         visited_edges.push_back(stack.top());
 
         // Garder en mémoire la node
