@@ -132,7 +132,7 @@ Node*& most_left(Node*& node)
     }
     else
     {
-        return node->left;
+        return node;
     }
 
     return node;
@@ -197,8 +197,7 @@ void delete_tree(Node* node)
     {
       delete_tree(node->left); 
     }
-    
-    // ici j'ai pas fait "!= nullptr" car un pointeur est converti en boolean "true" si il est non nullptr et "false" s'il est nullptr donc ça revient au même
+
     if(node->right) {
       delete_tree(node->right); 
     }
