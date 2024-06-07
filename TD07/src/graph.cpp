@@ -123,8 +123,6 @@ void Graph::WeightedGraph::print_BFS(int const start) const
 
 std::unordered_map<int, std::pair<float, int>> Graph::dijkstra(Graph::WeightedGraph const& graph, int const& start, int const end)
 {
-    int current_node{};
-
     // On crée un tableau associatif pour stocker les distances les plus courtes connues pour aller du sommet de départ à chaque sommet visité
     // La clé est l'identifiant du sommet et la valeur est un pair (distance, sommet précédent)
     std::unordered_map<int, std::pair<float, int>> distances {};
@@ -135,27 +133,26 @@ std::unordered_map<int, std::pair<float, int>> Graph::dijkstra(Graph::WeightedGr
     std::priority_queue<std::pair<float, int>, std::vector<std::pair<float, int>>, std::greater<std::pair<float, int>>> to_visit {};
 
     // 1. On ajoute le sommet de départ à la liste des sommets à visiter avec une distance de 0 (on est déjà sur le sommet de départ)
-    to_visit.push(std::make_pair(0, start));
-
-    // ajouter la node à la liste des sommets visités
-    distances.insert(std::make_pair(start, std::make_pair(0, start))); 
+    to_visit.push({0.f, start});
 
     // Tant qu'il reste des sommets à visiter
     while (!(to_visit.empty()))
     {
-        // 2. On récupère le sommet le plus proche du sommet de départ dans la liste de priorité to_visit
-        current_node = to_visit.top().second;
+        // 2. On récupère le sommet le plus proche du sommet de départ dans la liste de priorité to_visit, puis on le sors de la pile
+        int current_node {to_visit.top().second};
+        float current_distance{to_visit.top().first};
+        to_visit.pop();
 
-        // 3.Si on atteins le point d'arrivé, on s'arrête
+        // 3.Si on atteint le point d'arrivée, on s'arrête
         if (current_node == end)
         {
             return distances;
         }
 
         // 3. On parcourt la liste des voisins (grâce à la liste d'adjacence) du nœud courant
-        for (Graph::WeightedGraphEdge edge : graph.adjacency_list.find(current_node)->second) 
+        for (Graph::WeightedGraphEdge edge : graph.adjacency_list.find(current_node)->second)
         {
-            // 4. on regarde si le nœud existe dans le tableau associatif (si oui il a déjà été visité)
+            // 4. on regarde si le nœud existe dans le tableau associatif (si oui, il a déjà été visité)
             auto find_node {distances.find(edge.to)};
             bool visited{};
 
@@ -170,16 +167,15 @@ std::unordered_map<int, std::pair<float, int>> Graph::dijkstra(Graph::WeightedGr
 
             if (!visited)
             {
-                // 5. Si le nœud n'a pas été visité, on l'ajoute au tableau associatif en calculant la distance pour aller jusqu'à ce nœud
-                // la distance actuelle + le point de l'arrête)
+                // 5. Si le nœud n'a pas été visité, on l'ajoute au tableau associatif en calculant la distance pour aller jusqu'à ce nœud (la distance actuelle + le point de l'arrête)
                 distances.insert(std::make_pair(edge.to, std::make_pair(distances.find(current_node)->second.first + edge.weight, current_node)));
                 
-                // 6. On ajout également le nœud de destination à la liste des nœud à visiter (avec la distance également pour prioriser les nœuds les plus proches)
+                // 6. On ajoute également le nœud de destination à la liste des nœud à visiter (avec la distance également pour prioriser les nœuds les plus proches)
                 to_visit.push(std::make_pair(edge.weight, edge.to));
             }
             else
             {
-                // 7. Si il a déjà été visité, On teste si la distance dans le tableau associatif est plus grande
+                // 7. Si il a déjà été visité, on teste si la distance dans le tableau associatif est plus grande
                 // Si c'est le cas on à trouvé un plus court chemin, on met à jour le tableau associatif et on ajoute de nouveau le sommet de destination dans la liste "à visiter"
                 if (distances.find(current_node)->second.first + edge.weight < distances.find(edge.to)->second.first)
                 {

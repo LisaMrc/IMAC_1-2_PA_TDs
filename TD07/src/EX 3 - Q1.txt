@@ -1,0 +1,42 @@
+Initialisation :
+On ajoute le sommet A à la liste des sommets à visiter avec une distance de 0 (on est déjà sur le sommet de départ) et d'où on vient (on est déjà sur le sommet de départ).
+
+Distances : -
+A visiter : A(0)
+
+Il reste des éléments dans la liste à visiter. On récupère le sommet qui a la plus petite distance (A) et on le retire de la liste à visiter. On parcourt la liste des voisins de A (C, B et D), aucun n'a été déjà visité, on les ajoute donc tous à la liste à visiter et au tableau associatif avec la distance en passant par A (0 + poids de l'arête) et d'où on vient (A).
+
+Distances : B(1, A), D(2, A), C(5, A)
+A visiter : B(1), D(2), C(5)
+
+On récupère B(2) :
+Je récupère maintenant B qui est le sommet prioritaire dans la liste à visiter (plus petites distance).
+Je parcours la liste des voisins de B (C et D). C et D sont déjà présents dans le tableau associatif, ce qui indique qu'ils ont déjà été visités ou marqués à visiter. 
+Ici le poids actuellement dans le tableau des distances est égale au poids en passant par B pour aller à C (1 + 4 vs 5), mais inférieur pour D (1 + 5 vs 2). On ne change donc rien : les chemins sont soit égaux, soit plus longs.
+
+Distances : B(1, A), C(5, A), D(2, A)
+A visiter : D(2), C(5)
+
+On récupère D(2) :
+Pour D (prioritaire), on refait comme précédemment.
+Je parcoure la liste des voisins de D (C et E). C a déjà été visité, E non. On l'ajoute au tableau, en prenant compte d'où l'on vient (A), soit 2 + 5 = 7.
+Ici, le poids de l'arrête pour aller de à C en passant par D est plus court en passant par D (2 + 2 < 5). On met à jour la distance dans le tableau et on  rajoute de nouveau D dans la liste à visiter.
+
+Distances : B(1, A), C(4, D), D(2, A), E(7, D)
+A visiter : C(5), E(7), C(4)
+
+Pour C(4) :
+Je parcoure la liste des voisins de C (E et F). E est déjà dans le tableau, la distance pour y aller est égale à ce qu'il y a dans le tableau, on ne change rien (4 + 3 = 7). F n'est pas présent dans le tableau, on l'ajoute
+
+Distances : B(1, A), C(4, D), D(2, A), E(7, D), F(8, C)
+A visiter : C(5), E(7), F(8)
+
+C(5) ne modifie rien car c'est un doublon.
+
+Pour E(7) :
+Enfin on récupère. Son voisin est F, mais la distance en passant par E est plus grande qu'en passant par C (7 + 3 > 8), donc on ne change rien. E est le sommet de destination, on l'a atteint donc on peut s'arrêter et retourner le tableau.
+
+Distances : B(1, A), C(4, D), D(2, A), E(7, D), F(8, C)
+A visiter : F(8)
+
+Le chemin est donc A -> D -> E, de distance 7

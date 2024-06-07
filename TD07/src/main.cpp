@@ -38,7 +38,11 @@ int main()
 
     other_graph.print_DFS(0);
 
-    // TODO : test other functions
+    Graph::dijkstra(builded_graph, 0, 4);
+
+    // Test of other functions
+    builded_graph.print_BFS(0);
+    // builded_graph.add_undirected_edge(1, 2, 1);
 
     return 0;
 }
